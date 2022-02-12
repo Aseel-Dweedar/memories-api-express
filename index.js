@@ -15,6 +15,8 @@ app.use(cors());
 
 app.use("/posts", postRoute);
 
+app.get('/', (req, res) => res.send("YOLO !!"));
+
 const PORT = process.env.PORT || 8090;
 
 mongoose.connect(process.env.DATABASE_URL)
