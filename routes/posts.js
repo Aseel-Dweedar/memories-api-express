@@ -6,6 +6,7 @@ import { getPosts, createPost, updatePost, deletePost, likePost } from "../contr
 const router = express.Router();
 
 router.get("/", getPosts);
+router.get("/search", getPosts);
 router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
 router.patch("/:id/likePost", auth, likePost);
