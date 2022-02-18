@@ -13,12 +13,19 @@ export const getPosts = async (req, res) => {
 
 export const getPostsBySearch = async (req, res) => {
 
-    const { search, tags } = req.query;
-    tags = tags.split(',');
+    const { searchQuery, tags } = req.query;
 
     try {
-        const postMessage = await PostMessage.find({});
-        res.status(200).json(postMessage)
+
+        // use regex because it's easier for express to find them
+        const title = new RegExp(searchQuery, "i");
+
+        // $or : search for something or something (in this case title or tags)
+        // $in : if there is on of the tags is matching our array of tags
+        const posts = await PostMessage.find({ $or: [{ title }, { tags: { $in: tags.split(',') } }] });
+
+        res.json(posts)
+
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
