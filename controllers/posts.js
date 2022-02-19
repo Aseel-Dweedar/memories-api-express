@@ -8,7 +8,7 @@ export const getPosts = async (req, res) => {
 
     try {
 
-        const LIMIT = 6;
+        const LIMIT = 8;
         const startIndex = (page - 1) * LIMIT;
         const total = await PostMessage.countDocuments({});
         // const total = LIMIT * page;
