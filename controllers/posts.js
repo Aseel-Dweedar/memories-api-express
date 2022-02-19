@@ -2,9 +2,24 @@ import PostMessage from "../models/postMessage.js"
 import mongoose from "mongoose";
 
 export const getPosts = async (req, res) => {
+
+    let { page } = req.query;
+    page = Number(page);
+
     try {
-        const postMessage = await PostMessage.find();
-        res.status(200).json(postMessage)
+
+        const LIMIT = 6;
+        const startIndex = (page - 1) * LIMIT;
+        const total = await PostMessage.countDocuments({});
+        // const total = LIMIT * page;
+
+        // sort by {_id : -1} means sort from newest to oldest by id
+        // limit give a specific limit of items
+        // skip will make it count from a specific point (starting point)
+        const postMessage = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+
+        res.status(200).json({ data: postMessage, currentPage: page, numberOfPages: Math.ceil(total / LIMIT) })
+
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
