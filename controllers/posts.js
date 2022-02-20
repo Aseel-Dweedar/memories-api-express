@@ -55,7 +55,7 @@ export const getPostsBySearch = async (req, res) => {
         res.json(posts)
 
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ message: error.message, state: "Can't find Posts" });
     }
 }
 
